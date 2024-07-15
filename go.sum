@@ -41,7 +41,6 @@ github.com/VirusTotal/vt-go v0.0.0-20210528074736-45bbe34cc8ab h1:96tkQLYmgypA3W
 github.com/VirusTotal/vt-go v0.0.0-20210528074736-45bbe34cc8ab/go.mod h1:u1+HeRyl/gQs67eDgVEWNE7+x+zCyXhdtNVrRJR5YPE=
 github.com/VividCortex/ewma v1.2.0 h1:f58SaIzcDXrSy3kWaHNvuJgJ3Nmz59Zji6XoJR/q1ow=
 github.com/VividCortex/ewma v1.2.0/go.mod h1:nz4BbCtbLyFDeC9SUHbtcT5644juEuWfUAUnGx7j5l4=
-github.com/akamensky/argparse v1.3.0 h1:/y3NFl6Nhw6alHDWoI9tx3vSyrB5zRgs4y9jzHxtjjg=
 github.com/akamensky/argparse v1.3.0/go.mod h1:S5kwC7IuDcEr5VeXtGPRVZ5o/FdhcMlQz4IZQuw64xA=
 github.com/akutz/memconn v0.1.0 h1:NawI0TORU4hcOMsMr11g7vwlCdkYeLKXBcxWu2W/P8A=
 github.com/akutz/memconn v0.1.0/go.mod h1:Jo8rI7m0NieZyLI5e2CDlRdRqRRB4S7Xp77ukDjH+Fw=
@@ -324,8 +323,8 @@ github.com/pkg/sftp v1.13.6/go.mod h1:tz1ryNURKu77RL+GuCzmoJYxQczL3wLNNpPWagdg4Q
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=
-github.com/reeflective/console v0.1.15 h1:r4M1a19s882znSO5Zkj7memsLSDTLT/0fZwdNzhIldE=
-github.com/reeflective/console v0.1.15/go.mod h1:U2i+gzsZ5mT9LZHLzoeuOJ7BtcyXy7l+psRZSu4zmQU=
+github.com/reeflective/console v0.1.16 h1:vO/RMfo1uqxsOp423h2BAArreLDSpJysq25bAf9ropw=
+github.com/reeflective/console v0.1.16/go.mod h1:U2i+gzsZ5mT9LZHLzoeuOJ7BtcyXy7l+psRZSu4zmQU=
 github.com/reeflective/readline v1.0.14 h1:sgKLpi3figH8IcWx3Hu3rCeGJQ6W+6KtZ3PTdcAD3jA=
 github.com/reeflective/readline v1.0.14/go.mod h1:3iOe/qyb2jEy0KqLrNlb/CojBVqxga9ACqz/VU22H6A=
 github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec h1:W09IVJc94icq4NjY3clb7Lk8O1qJ8BdBEF8z0ibU0rE=

@@ -1,0 +1,50 @@
+/.vscode/*
+/.devcontainer
+/.idea
+
+/Dockerfile.*
+/*.sdk.tar.xz
+
+/release-*
+
+# Diffs
+*.orig
+
+# Binaries
+/sliver-server
+/sliver-server_arm64
+/sliver.exe
+/sliver-server_*
+
+/sliver-client
+/sliver-client_arm64
+/sliver-client.exe
+/sliver-client_*
+
+sliver-server-linux.zip
+sliver-server-macos.zip
+sliver-server-windows.zip
+
+
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test binary, build with `go test -c`
+/*.test
+/test.py
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+/*.out
+
+# Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
+.glide/
+
+.DS_Store
+
+dist/
+
+# Flag to show that go-assets.sh has been run
+.downloaded_assets

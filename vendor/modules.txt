@@ -1,4 +1,4 @@
-# cloud.google.com/go/compute/metadata v0.2.3
+# cloud.google.com/go/compute/metadata v0.3.0
 ## explicit; go 1.19
 # filippo.io/age v1.1.1
 ## explicit; go 1.19
@@ -23,7 +23,6 @@ github.com/Binject/binjection/bj
 github.com/Binject/debug/elf
 github.com/Binject/debug/macho
 github.com/Binject/debug/pe
-## explicit; go 1.16
 # github.com/Binject/shellcode v0.0.0-20191101084904-a8a90e7d4563
 ## explicit
 github.com/Binject/shellcode
@@ -45,7 +44,6 @@ github.com/Microsoft/go-winio/pkg/guid
 github.com/Ne0nd0g/go-clr
 # github.com/PhantomSecurityGroup/go-donuts v1.4.6
 ## explicit; go 1.16
-github.com/PhantomSecurityGroup/go-donuts
 github.com/PhantomSecurityGroup/go-donuts/donut
 # github.com/VirusTotal/vt-go v0.0.0-20210528074736-45bbe34cc8ab
 ## explicit; go 1.14
@@ -53,9 +51,6 @@ github.com/VirusTotal/vt-go
 # github.com/VividCortex/ewma v1.2.0
 ## explicit; go 1.12
 github.com/VividCortex/ewma
-# github.com/akamensky/argparse v1.3.0
-## explicit; go 1.13
-github.com/akamensky/argparse
 # github.com/akutz/memconn v0.1.0
 ## explicit
 github.com/akutz/memconn
@@ -927,17 +922,18 @@ golang.zx2c4.com/wireguard/wgctrl/wgtypes
 # golang.zx2c4.com/wireguard/windows v0.5.3
 ## explicit; go 1.18
 golang.zx2c4.com/wireguard/windows/tunnel/winipcfg
-# google.golang.org/genproto/googleapis/rpc v0.0.0-20240318140521-94a12d6c2237
-## explicit; go 1.19
+# google.golang.org/genproto/googleapis/rpc v0.0.0-20240528184218-531527333157
+## explicit; go 1.20
 google.golang.org/genproto/googleapis/rpc/status
-# google.golang.org/grpc v1.64.0
-## explicit; go 1.19
+# google.golang.org/grpc v1.65.0
+## explicit; go 1.21
 google.golang.org/grpc
 google.golang.org/grpc/attributes
 google.golang.org/grpc/backoff
 google.golang.org/grpc/balancer
 google.golang.org/grpc/balancer/base
 google.golang.org/grpc/balancer/grpclb/state
+google.golang.org/grpc/balancer/pickfirst
 google.golang.org/grpc/balancer/roundrobin
 google.golang.org/grpc/binarylog/grpc_binarylog_v1
 google.golang.org/grpc/channelz
@@ -958,7 +954,6 @@ google.golang.org/grpc/internal/channelz
 google.golang.org/grpc/internal/credentials
 google.golang.org/grpc/internal/envconfig
 google.golang.org/grpc/internal/grpclog
-google.golang.org/grpc/internal/grpcrand
 google.golang.org/grpc/internal/grpcsync
 google.golang.org/grpc/internal/grpcutil
 google.golang.org/grpc/internal/idle

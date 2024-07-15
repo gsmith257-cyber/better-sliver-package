@@ -32,9 +32,9 @@ import (
 
 // TerminateCmd - Terminate a process on the remote system
 func TerminateCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
-	session, beacon := con.ActiveTarget.GetInteractive()
-	if session == nil && beacon == nil {
-		con.PrintErrorf("No active session or beacon\n")
+	session, bacon := con.ActiveTarget.GetInteractive()
+	if session == nil && bacon == nil {
+		con.PrintErrorf("No active session or bacon\n")
 		return
 	}
 

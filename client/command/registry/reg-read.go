@@ -84,11 +84,11 @@ func RegReadCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
 		finalPath string
 		key       string
 	)
-	session, beacon := con.ActiveTarget.GetInteractive()
-	if session == nil && beacon == nil {
+	session, bacon := con.ActiveTarget.GetInteractive()
+	if session == nil && bacon == nil {
 		return
 	}
-	targetOS := getOS(session, beacon)
+	targetOS := getOS(session, bacon)
 	if targetOS != "windows" {
 		con.PrintErrorf("Registry operations can only target Windows\n")
 		return
@@ -193,11 +193,11 @@ func writeHiveDump(data []byte, encoder string, fileName string, saveLoot bool, 
 }
 
 func RegReadHiveCommand(cmd *cobra.Command, con *console.SliverClient, args []string) {
-	session, beacon := con.ActiveTarget.GetInteractive()
-	if session == nil && beacon == nil {
+	session, bacon := con.ActiveTarget.GetInteractive()
+	if session == nil && bacon == nil {
 		return
 	}
-	targetOS := getOS(session, beacon)
+	targetOS := getOS(session, bacon)
 	if targetOS != "windows" {
 		con.PrintErrorf("Registry operations can only target Windows\n")
 		return
@@ -231,7 +231,7 @@ func RegReadHiveCommand(cmd *cobra.Command, con *console.SliverClient, args []st
 		// Get implant name
 		implantName := ""
 		if session == nil {
-			implantName = beacon.Name
+			implantName = bacon.Name
 		} else {
 			implantName = session.Name
 		}

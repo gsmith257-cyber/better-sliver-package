@@ -252,8 +252,8 @@ func ParseAliasManifest(data []byte) (*AliasManifest, error) {
 }
 
 func runAliasCommand(cmd *cobra.Command, con *console.SliverClient, args []string) {
-	session, beacon := con.ActiveTarget.GetInteractive()
-	if session == nil && beacon == nil {
+	session, bacon := con.ActiveTarget.GetInteractive()
+	if session == nil && bacon == nil {
 		return
 	}
 	var goos string
@@ -262,8 +262,8 @@ func runAliasCommand(cmd *cobra.Command, con *console.SliverClient, args []strin
 		goos = session.OS
 		goarch = session.Arch
 	} else {
-		goos = beacon.OS
-		goarch = beacon.Arch
+		goos = bacon.OS
+		goarch = bacon.Arch
 	}
 
 	loadedAlias, ok := loadedAliases[cmd.Name()]

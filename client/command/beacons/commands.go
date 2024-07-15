@@ -31,9 +31,9 @@ func Commands(con *console.SliverClient) []*cobra.Command {
 		f.IntP("timeout", "t", flags.DefaultTimeout, "grpc timeout in seconds")
 	})
 	flags.Bind("beacons", false, beaconsCmd, func(f *pflag.FlagSet) {
-		f.StringP("kill", "k", "", "kill the designated beacon")
+		f.StringP("kill", "k", "", "kill the designated bacon")
 		f.BoolP("kill-all", "K", false, "kill all beacons")
-		f.BoolP("force", "F", false, "force killing the beacon")
+		f.BoolP("force", "F", false, "force killing the bacon")
 
 		f.StringP("filter", "f", "", "filter beacons by substring")
 		f.StringP("filter-re", "e", "", "filter beacons by regular expression")
@@ -43,7 +43,7 @@ func Commands(con *console.SliverClient) []*cobra.Command {
 	})
 	beaconsRmCmd := &cobra.Command{
 		Use:   consts.RmStr,
-		Short: "Remove a beacon",
+		Short: "Remove a bacon",
 		Long:  help.GetHelpFor([]string{consts.BeaconsStr, consts.RmStr}),
 		Run: func(cmd *cobra.Command, args []string) {
 			BeaconsRmCmd(cmd, con, args)
@@ -78,7 +78,7 @@ func Commands(con *console.SliverClient) []*cobra.Command {
 	return []*cobra.Command{beaconsCmd}
 }
 
-// BeaconIDCompleter completes beacon IDs
+// BeaconIDCompleter completes bacon IDs
 func BeaconIDCompleter(con *console.SliverClient) carapace.Action {
 	callback := func(_ carapace.Context) carapace.Action {
 		results := make([]string, 0)

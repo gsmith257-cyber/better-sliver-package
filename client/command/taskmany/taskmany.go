@@ -48,7 +48,7 @@ func Command(con *console.SliverClient) []*cobra.Command {
 		},
 	}
 
-	// Add the relevant beacon commands as a subcommand to taskmany
+	// Add the relevant bacon commands as a subcommand to taskmany
 	// taskmanyCmds := map[string]bool{
 	// 	consts.ExecuteStr:     true,
 	// 	consts.LsStr:          true,
@@ -99,7 +99,7 @@ func WrapCommand(c *cobra.Command, con *console.SliverClient) *cobra.Command {
 	return wc
 }
 
-// Wrap a function to run it for each beacon / session
+// Wrap a function to run it for each bacon / session
 func wrapFunctionWithTaskmany(con *console.SliverClient, f func(cmd *cobra.Command, args []string)) func(cmd *cobra.Command, args []string) {
 	return func(cmd *cobra.Command, args []string) {
 		defer con.Println()
@@ -113,7 +113,7 @@ func wrapFunctionWithTaskmany(con *console.SliverClient, f func(cmd *cobra.Comma
 
 		con.Println()
 
-		// Save current active beacon or session
+		// Save current active bacon or session
 		origSession, origBeacon := con.ActiveTarget.Get()
 
 		nB := 0
@@ -140,7 +140,7 @@ func wrapFunctionWithTaskmany(con *console.SliverClient, f func(cmd *cobra.Comma
 			}
 		}
 
-		// Restore active session / beacon
+		// Restore active session / bacon
 		con.ActiveTarget.Set(origSession, origBeacon)
 
 		con.PrintInfof("Tasked %d sessions and %d beacons >:D\n", nS, nB)
@@ -150,7 +150,7 @@ func wrapFunctionWithTaskmany(con *console.SliverClient, f func(cmd *cobra.Comma
 	}
 }
 
-func SelectMultipleBeaconsAndSessions(con *console.SliverClient) ([]*clientpb.Session, []*clientpb.Beacon, error) {
+func SelectMultipleBeaconsAndSessions(con *console.SliverClient) ([]*clientpb.Session, []*clientpb.Bacon, error) {
 	// Get and sort sessions
 	sessionsObj, err := con.Rpc.GetSessions(context.Background(), &commonpb.Empty{})
 	if err != nil {
@@ -195,20 +195,20 @@ func SelectMultipleBeaconsAndSessions(con *console.SliverClient) ([]*clientpb.Se
 		sessionOptionMap[o] = session
 	}
 
-	beaconOptionMap := map[string]*clientpb.Beacon{}
-	for _, beacon := range beacons {
+	beaconOptionMap := map[string]*clientpb.Bacon{}
+	for _, bacon := range beacons {
 		option := fmt.Sprintf("%s\t%s\t%s\t%s\t%s\t%s\t%s",
 			"BEACON",
-			strings.Split(beacon.ID, "-")[0],
-			beacon.Name,
-			beacon.RemoteAddress,
-			beacon.Hostname,
-			beacon.Username,
-			fmt.Sprintf("%s/%s", beacon.OS, beacon.Arch),
+			strings.Split(bacon.ID, "-")[0],
+			bacon.Name,
+			bacon.RemoteAddress,
+			bacon.Hostname,
+			bacon.Username,
+			fmt.Sprintf("%s/%s", bacon.OS, bacon.Arch),
 		)
 		fmt.Fprintf(table, option+"\n")
 		o := strings.ReplaceAll(option, "\t", "")
-		beaconOptionMap[o] = beacon
+		beaconOptionMap[o] = bacon
 	}
 	table.Flush()
 
@@ -226,7 +226,7 @@ func SelectMultipleBeaconsAndSessions(con *console.SliverClient) ([]*clientpb.Se
 	}
 
 	selectedSessions := []*clientpb.Session{}
-	selectedBeacons := []*clientpb.Beacon{}
+	selectedBeacons := []*clientpb.Bacon{}
 	for _, s := range selected {
 		s = strings.ReplaceAll(s, " ", "")
 		s = strings.ReplaceAll(s, "\t", "")
@@ -235,9 +235,9 @@ func SelectMultipleBeaconsAndSessions(con *console.SliverClient) ([]*clientpb.Se
 			selectedSessions = append(selectedSessions, session)
 		}
 
-		beacon, ok := beaconOptionMap[s]
+		bacon, ok := beaconOptionMap[s]
 		if ok {
-			selectedBeacons = append(selectedBeacons, beacon)
+			selectedBeacons = append(selectedBeacons, bacon)
 		}
 	}
 

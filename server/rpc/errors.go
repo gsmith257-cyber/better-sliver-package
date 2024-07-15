@@ -27,10 +27,10 @@ import (
 )
 
 var (
-	// ErrInvalidBeaconID - Invalid Beacon ID in request
-	ErrInvalidBeaconID = status.Error(codes.InvalidArgument, "Invalid beacon ID")
-	// ErrInvalidBeaconTaskID - Invalid Beacon ID in request
-	ErrInvalidBeaconTaskID = status.Error(codes.InvalidArgument, "Invalid beacon task ID")
+	// ErrInvalidBeaconID - Invalid Bacon ID in request
+	ErrInvalidBeaconID = status.Error(codes.InvalidArgument, "Invalid bacon ID")
+	// ErrInvalidBeaconTaskID - Invalid Bacon ID in request
+	ErrInvalidBeaconTaskID = status.Error(codes.InvalidArgument, "Invalid bacon task ID")
 
 	// ErrInvalidSessionID - Invalid Session ID in request
 	ErrInvalidSessionID = status.Error(codes.InvalidArgument, "Invalid session ID")

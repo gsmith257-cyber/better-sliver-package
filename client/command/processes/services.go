@@ -31,13 +31,13 @@ const (
 )
 
 func ServicesCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
-	session, beacon := con.ActiveTarget.GetInteractive()
-	if session == nil && beacon == nil {
+	session, bacon := con.ActiveTarget.GetInteractive()
+	if session == nil && bacon == nil {
 		return
 	}
 
 	// Hopefully this command being Windows only is temporary
-	activeOS := getOS(session, beacon)
+	activeOS := getOS(session, bacon)
 	if activeOS != "windows" {
 		con.PrintErrorf("The services command is currently only available on Windows")
 		return
@@ -70,13 +70,13 @@ func ServicesCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
 }
 
 func ServiceInfoCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
-	session, beacon := con.ActiveTarget.GetInteractive()
-	if session == nil && beacon == nil {
+	session, bacon := con.ActiveTarget.GetInteractive()
+	if session == nil && bacon == nil {
 		return
 	}
 
 	// Hopefully this command being Windows only is temporary
-	activeOS := getOS(session, beacon)
+	activeOS := getOS(session, bacon)
 	if activeOS != "windows" {
 		con.PrintErrorf("The services command is currently only available on Windows")
 		return
@@ -115,13 +115,13 @@ func ServiceInfoCmd(cmd *cobra.Command, con *console.SliverClient, args []string
 }
 
 func ServiceStopCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
-	session, beacon := con.ActiveTarget.GetInteractive()
-	if session == nil && beacon == nil {
+	session, bacon := con.ActiveTarget.GetInteractive()
+	if session == nil && bacon == nil {
 		return
 	}
 
 	// Hopefully this command being Windows only is temporary
-	activeOS := getOS(session, beacon)
+	activeOS := getOS(session, bacon)
 	if activeOS != "windows" {
 		con.PrintErrorf("The services command is currently only available on Windows")
 		return
@@ -157,7 +157,7 @@ func ServiceStopCmd(cmd *cobra.Command, con *console.SliverClient, args []string
 			} else {
 				displayName := hostname
 				if hostname == "localhost" {
-					displayName = beacon.Name
+					displayName = bacon.Name
 				}
 				con.PrintSuccessf("%s on %s stopped successfully", serviceName, displayName)
 			}
@@ -177,13 +177,13 @@ func ServiceStopCmd(cmd *cobra.Command, con *console.SliverClient, args []string
 }
 
 func ServiceStartCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
-	session, beacon := con.ActiveTarget.GetInteractive()
-	if session == nil && beacon == nil {
+	session, bacon := con.ActiveTarget.GetInteractive()
+	if session == nil && bacon == nil {
 		return
 	}
 
 	// Hopefully this command being Windows only is temporary
-	activeOS := getOS(session, beacon)
+	activeOS := getOS(session, bacon)
 	if activeOS != "windows" {
 		con.PrintErrorf("The services command is currently only available on Windows")
 		return
@@ -219,7 +219,7 @@ func ServiceStartCmd(cmd *cobra.Command, con *console.SliverClient, args []strin
 			} else {
 				displayName := hostname
 				if hostname == "localhost" {
-					displayName = beacon.Name
+					displayName = bacon.Name
 				}
 				con.PrintSuccessf("%s on %s started successfully", serviceName, displayName)
 			}

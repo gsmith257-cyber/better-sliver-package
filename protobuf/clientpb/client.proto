@@ -57,7 +57,7 @@ message Session {
   string Integrity = 28;
 }
 
-message Beacon {
+message Bacon {
   string ID = 1;
   string Name = 2;
   string Hostname = 3;
@@ -93,7 +93,7 @@ message Beacon {
   string Integrity = 30;
 }
 
-message Beacons { repeated Beacon Beacons = 2; }
+message Beacons { repeated Bacon Beacons = 2; }
 
 message BeaconTask {
   string ID = 1;

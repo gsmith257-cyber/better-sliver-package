@@ -32,8 +32,8 @@ import (
 
 // MigrateCmd - Windows only, inject an implant into another process
 func MigrateCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
-	session, beacon := con.ActiveTarget.GetInteractive()
-	if session == nil && beacon == nil {
+	session, bacon := con.ActiveTarget.GetInteractive()
+	if session == nil && bacon == nil {
 		return
 	}
 
@@ -52,7 +52,7 @@ func MigrateCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
 		implantName = session.Name
 	} else {
 		config = con.GetActiveBeaconConfig()
-		implantName = beacon.Name
+		implantName = bacon.Name
 	}
 
 	encoder := clientpb.ShellcodeEncoder_SHIKATA_GA_NAI

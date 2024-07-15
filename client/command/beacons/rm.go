@@ -26,17 +26,17 @@ import (
 
 // BeaconsRmCmd - Display/interact with beacons
 func BeaconsRmCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
-	beacon, err := SelectBeacon(con)
+	bacon, err := SelectBeacon(con)
 	if err != nil {
 		con.PrintErrorf("%s\n", err)
 		return
 	}
 	grpcCtx, cancel := con.GrpcContext(cmd)
 	defer cancel()
-	_, err = con.Rpc.RmBeacon(grpcCtx, beacon)
+	_, err = con.Rpc.RmBeacon(grpcCtx, bacon)
 	if err != nil {
 		con.PrintErrorf("%s\n", err)
 		return
 	}
-	con.PrintInfof("Beacon removed (%s)\n", beacon.ID)
+	con.PrintInfof("Bacon removed (%s)\n", bacon.ID)
 }

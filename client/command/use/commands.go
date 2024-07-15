@@ -16,7 +16,7 @@ import (
 func Commands(con *console.SliverClient) []*cobra.Command {
 	useCmd := &cobra.Command{
 		Use:   consts.UseStr,
-		Short: "Switch the active session or beacon",
+		Short: "Switch the active session or bacon",
 		Long:  help.GetHelpFor([]string{consts.UseStr}),
 		Run: func(cmd *cobra.Command, args []string) {
 			UseCmd(cmd, con, args)
@@ -41,7 +41,7 @@ func Commands(con *console.SliverClient) []*cobra.Command {
 
 	useBeaconCmd := &cobra.Command{
 		Use:   consts.BeaconsStr,
-		Short: "Switch the active beacon",
+		Short: "Switch the active bacon",
 		Long:  help.GetHelpFor([]string{consts.UseStr, consts.BeaconsStr}),
 		Run: func(cmd *cobra.Command, args []string) {
 			UseBeaconCmd(cmd, con, args)

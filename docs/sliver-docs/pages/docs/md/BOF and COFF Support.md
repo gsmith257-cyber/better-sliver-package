@@ -15,7 +15,7 @@ sliver > armory install nanodump
 
 sliver > nanodump -h
 
-A Beacon Object File that creates a minidump of the LSASS process.
+A Bacon Object File that creates a minidump of the LSASS process.
 
 Usage:
 ======

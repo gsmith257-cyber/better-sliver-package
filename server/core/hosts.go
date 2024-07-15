@@ -40,8 +40,8 @@ func StartEventAutomation() {
 			switch event.EventType {
 
 			case consts.BeaconRegisteredEvent:
-				if event.Beacon != nil {
-					hostsBeaconCallback(event.Beacon)
+				if event.Bacon != nil {
+					hostsBeaconCallback(event.Bacon)
 				}
 			case consts.SessionOpenedEvent:
 				if event.Session != nil {
@@ -81,24 +81,24 @@ func hostsSessionCallback(session *Session) {
 	}
 }
 
-// Triggered on new beacon events, checks to see if the host is in
+// Triggered on new bacon events, checks to see if the host is in
 // the database and adds it if not.
-func hostsBeaconCallback(beacon *models.Beacon) {
-	coreLog.Debugf("Hosts beacon callback for %v", beacon.UUID)
+func hostsBeaconCallback(bacon *models.Bacon) {
+	coreLog.Debugf("Hosts bacon callback for %v", bacon.UUID)
 	dbSession := db.Session()
-	host, err := db.HostByHostUUID(beacon.UUID.String())
+	host, err := db.HostByHostUUID(bacon.UUID.String())
 	coreLog.Debugf("Hosts query result: %v %v", host, err)
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		coreLog.Error(err)
 		return
 	}
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		coreLog.Infof("Beacon %v is from a new host", beacon.ID)
+		coreLog.Infof("Bacon %v is from a new host", bacon.ID)
 		err := dbSession.Create(&models.Host{
-			HostUUID:      uuid.FromStringOrNil(beacon.UUID.String()),
-			Hostname:      beacon.Hostname,
-			OSVersion:     beacon.OS,
-			Locale:        beacon.Locale,
+			HostUUID:      uuid.FromStringOrNil(bacon.UUID.String()),
+			Hostname:      bacon.Hostname,
+			OSVersion:     bacon.OS,
+			Locale:        bacon.Locale,
 			IOCs:          []models.IOC{},
 			ExtensionData: []models.ExtensionData{},
 		}).Error

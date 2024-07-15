@@ -58,7 +58,7 @@ func newDBClient() *gorm.DB {
 		&models.HttpC2Config{},
 		&models.HttpC2URLParameter{},
 		&models.HttpC2PathSegment{},
-		&models.Beacon{},
+		&models.Bacon{},
 		&models.BeaconTask{},
 		&models.DNSCanary{},
 		&models.Crackstation{},

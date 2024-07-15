@@ -114,8 +114,8 @@ func hostBeacons(hostUUID string, con *console.SliverClient) string {
 		return "Error"
 	}
 	count := 0
-	for _, beacon := range beacons.Beacons {
-		if beacon.UUID == hostUUID {
+	for _, bacon := range beacons.Beacons {
+		if bacon.UUID == hostUUID {
 			count++
 		}
 	}

@@ -8,10 +8,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// TasksCancelCmd - Cancel a beacon task before it's sent to the implant.
+// TasksCancelCmd - Cancel a bacon task before it's sent to the implant.
 func TasksCancelCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
-	beacon := con.ActiveTarget.GetBeaconInteractive()
-	if beacon == nil {
+	bacon := con.ActiveTarget.GetBeaconInteractive()
+	if bacon == nil {
 		return
 	}
 
@@ -22,7 +22,7 @@ func TasksCancelCmd(cmd *cobra.Command, con *console.SliverClient, args []string
 	var task *clientpb.BeaconTask
 	var err error
 	if idArg == "" {
-		BaconTasks, err := con.Rpc.GetBeaconTasks(context.Background(), &clientpb.Beacon{ID: beacon.ID})
+		BaconTasks, err := con.Rpc.GetBeaconTasks(context.Background(), &clientpb.Bacon{ID: bacon.ID})
 		if err != nil {
 			con.PrintErrorf("%s\n", err)
 			return
@@ -34,7 +34,7 @@ func TasksCancelCmd(cmd *cobra.Command, con *console.SliverClient, args []string
 			}
 		}
 		if len(tasks) == 0 {
-			con.PrintErrorf("No pending tasks for beacon\n")
+			con.PrintErrorf("No pending tasks for bacon\n")
 			return
 		}
 

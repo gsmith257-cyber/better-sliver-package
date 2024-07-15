@@ -739,7 +739,7 @@ var file_rpcpb_services_proto_goTypes = []interface{}{
 	(*clientpb.WGListenerReq)(nil),            // 7: clientpb.WGListenerReq
 	(*clientpb.DNSListenerReq)(nil),           // 8: clientpb.DNSListenerReq
 	(*clientpb.HTTPListenerReq)(nil),          // 9: clientpb.HTTPListenerReq
-	(*clientpb.Beacon)(nil),                   // 10: clientpb.Beacon
+	(*clientpb.Bacon)(nil),                   // 10: clientpb.Bacon
 	(*clientpb.BeaconTask)(nil),               // 11: clientpb.BeaconTask
 	(*clientpb.BeaconIntegrity)(nil),          // 12: clientpb.BeaconIntegrity
 	(*clientpb.KillJobReq)(nil),               // 13: clientpb.KillJobReq
@@ -983,9 +983,9 @@ var file_rpcpb_services_proto_depIdxs = []int32{
 	9,   // 15: rpcpb.SliverRPC.StartHTTPSListener:input_type -> clientpb.HTTPListenerReq
 	9,   // 16: rpcpb.SliverRPC.StartHTTPListener:input_type -> clientpb.HTTPListenerReq
 	0,   // 17: rpcpb.SliverRPC.GetBeacons:input_type -> commonpb.Empty
-	10,  // 18: rpcpb.SliverRPC.GetBeacon:input_type -> clientpb.Beacon
-	10,  // 19: rpcpb.SliverRPC.RmBeacon:input_type -> clientpb.Beacon
-	10,  // 20: rpcpb.SliverRPC.GetBeaconTasks:input_type -> clientpb.Beacon
+	10,  // 18: rpcpb.SliverRPC.GetBeacon:input_type -> clientpb.Bacon
+	10,  // 19: rpcpb.SliverRPC.RmBeacon:input_type -> clientpb.Bacon
+	10,  // 20: rpcpb.SliverRPC.GetBeaconTasks:input_type -> clientpb.Bacon
 	11,  // 21: rpcpb.SliverRPC.GetBeaconTaskContent:input_type -> clientpb.BeaconTask
 	11,  // 22: rpcpb.SliverRPC.CancelBeaconTask:input_type -> clientpb.BeaconTask
 	12,  // 23: rpcpb.SliverRPC.UpdateBeaconIntegrityInformation:input_type -> clientpb.BeaconIntegrity
@@ -1165,7 +1165,7 @@ var file_rpcpb_services_proto_depIdxs = []int32{
 	138, // 197: rpcpb.SliverRPC.StartHTTPSListener:output_type -> clientpb.ListenerJob
 	138, // 198: rpcpb.SliverRPC.StartHTTPListener:output_type -> clientpb.ListenerJob
 	139, // 199: rpcpb.SliverRPC.GetBeacons:output_type -> clientpb.Beacons
-	10,  // 200: rpcpb.SliverRPC.GetBeacon:output_type -> clientpb.Beacon
+	10,  // 200: rpcpb.SliverRPC.GetBeacon:output_type -> clientpb.Bacon
 	0,   // 201: rpcpb.SliverRPC.RmBeacon:output_type -> commonpb.Empty
 	140, // 202: rpcpb.SliverRPC.GetBeaconTasks:output_type -> clientpb.BaconTasks
 	11,  // 203: rpcpb.SliverRPC.GetBeaconTaskContent:output_type -> clientpb.BeaconTask

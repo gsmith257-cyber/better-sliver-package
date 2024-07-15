@@ -42,8 +42,8 @@ var logonTypes = map[string]uint32{
 
 // MakeTokenCmd - Windows only, create a token using "valid" credentails
 func MakeTokenCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
-	session, beacon := con.ActiveTarget.GetInteractive()
-	if session == nil && beacon == nil {
+	session, bacon := con.ActiveTarget.GetInteractive()
+	if session == nil && bacon == nil {
 		return
 	}
 

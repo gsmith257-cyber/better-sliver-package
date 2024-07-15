@@ -33,17 +33,17 @@ func Commands(con *console.SliverClient) []*cobra.Command {
 
 	generateBeaconCmd := &cobra.Command{
 		Use:   consts.BeaconStr,
-		Short: "Generate a bacon binary",
+		Short: "Generate a beacon binary",
 		Long:  help.GetHelpFor([]string{consts.GenerateStr, consts.BeaconStr}),
 		Run: func(cmd *cobra.Command, args []string) {
 			GenerateBeaconCmd(cmd, con, args)
 		},
 	}
 
-	// Bacon flags and completions.
-	coreImplantFlags("bacon", generateBeaconCmd)
-	compileImplantFlags("bacon", generateBeaconCmd)
-	coreBeaconFlags("bacon", generateBeaconCmd)
+	// Beacon flags and completions.
+	coreImplantFlags("beacon", generateBeaconCmd)
+	compileImplantFlags("beacon", generateBeaconCmd)
+	coreBeaconFlags("beacon", generateBeaconCmd)
 	coreImplantFlagCompletions(generateBeaconCmd, con)
 
 	generateCmd.AddCommand(generateBeaconCmd)
@@ -213,7 +213,7 @@ func Commands(con *console.SliverClient) []*cobra.Command {
 
 	profilesNewBeaconCmd := &cobra.Command{
 		Use:   consts.BeaconStr,
-		Short: "Create a new implant profile (bacon)",
+		Short: "Create a new implant profile (beacon)",
 		Long:  help.GetHelpFor([]string{consts.ProfilesStr, consts.NewStr, consts.BeaconStr}),
 		Run: func(cmd *cobra.Command, args []string) {
 			ProfilesNewBeaconCmd(cmd, con, args)
@@ -221,10 +221,10 @@ func Commands(con *console.SliverClient) []*cobra.Command {
 	}
 	profilesNewCmd.AddCommand(profilesNewBeaconCmd)
 
-	// Bacon flags and completions.
-	coreImplantFlags("bacon", profilesNewBeaconCmd)
-	compileImplantFlags("bacon", profilesNewBeaconCmd)
-	coreBeaconFlags("bacon", profilesNewBeaconCmd)
+	// Beacon flags and completions.
+	coreImplantFlags("beacon", profilesNewBeaconCmd)
+	compileImplantFlags("beacon", profilesNewBeaconCmd)
+	coreBeaconFlags("beacon", profilesNewBeaconCmd)
 	coreImplantFlagCompletions(profilesNewBeaconCmd, con)
 
 	profilesRmCmd := &cobra.Command{
@@ -380,14 +380,14 @@ func coreImplantFlagCompletions(cmd *cobra.Command, con *console.SliverClient) {
 	})
 }
 
-// coreBeaconFlags binds all flags specific to bacon implants (profiles or compiled).
+// coreBeaconFlags binds all flags specific to beacon implants (profiles or compiled).
 func coreBeaconFlags(name string, cmd *cobra.Command) {
 	flags.Bind(name, false, cmd, func(f *pflag.FlagSet) {
-		f.Int64P("days", "D", 0, "bacon interval days")
-		f.Int64P("hours", "H", 0, "bacon interval hours")
-		f.Int64P("minutes", "M", 0, "bacon interval minutes")
-		f.Int64P("seconds", "S", 60, "bacon interval seconds")
-		f.Int64P("jitter", "J", 30, "bacon interval jitter in seconds")
+		f.Int64P("days", "D", 0, "beacon interval days")
+		f.Int64P("hours", "H", 0, "beacon interval hours")
+		f.Int64P("minutes", "M", 0, "beacon interval minutes")
+		f.Int64P("seconds", "S", 60, "beacon interval seconds")
+		f.Int64P("jitter", "J", 30, "beacon interval jitter in seconds")
 	})
 }
 

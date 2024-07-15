@@ -39,8 +39,8 @@ func (rpc *Server) GetBeacons(ctx context.Context, req *commonpb.Empty) (*client
 		beaconRpcLog.Errorf("Failed to find db beacons: %s", err)
 		return nil, ErrDatabaseFailure
 	}
-	for id, bacon := range beacons {
-		all, completed, err := db.CountTasksByBeaconID(bacon.ID)
+	for id, beacon := range beacons {
+		all, completed, err := db.CountTasksByBeaconID(beacon.ID)
 		if err != nil {
 			beaconRpcLog.Errorf("Task count failed: %s", err)
 		}
@@ -51,31 +51,31 @@ func (rpc *Server) GetBeacons(ctx context.Context, req *commonpb.Empty) (*client
 }
 
 // GetBeacon - Get a list of beacons from the database
-func (rpc *Server) GetBeacon(ctx context.Context, req *clientpb.Bacon) (*clientpb.Bacon, error) {
-	bacon, err := db.BeaconByID(req.ID)
+func (rpc *Server) GetBeacon(ctx context.Context, req *clientpb.Beacon) (*clientpb.Beacon, error) {
+	beacon, err := db.BeaconByID(req.ID)
 	if err != nil {
 		beaconRpcLog.Error(err)
 		return nil, ErrDatabaseFailure
 	}
-	return bacon.ToProtobuf(), nil
+	return beacon.ToProtobuf(), nil
 }
 
-// RmBeacon - Delete a bacon and any related tasks
-func (rpc *Server) RmBeacon(ctx context.Context, req *clientpb.Bacon) (*commonpb.Empty, error) {
-	bacon, err := db.BeaconByID(req.ID)
+// RmBeacon - Delete a beacon and any related tasks
+func (rpc *Server) RmBeacon(ctx context.Context, req *clientpb.Beacon) (*commonpb.Empty, error) {
+	beacon, err := db.BeaconByID(req.ID)
 	if err != nil {
 		beaconRpcLog.Error(err)
 		return nil, ErrInvalidBeaconID
 	}
 
 	err = db.Session().Where(&models.BeaconTask{
-		BaconID: bacon.ID},
+		BaconID: beacon.ID},
 	).Delete(&models.BeaconTask{}).Error
 	if err != nil {
 		beaconRpcLog.Errorf("Database error: %s", err)
 		return nil, ErrDatabaseFailure
 	}
-	err = db.Session().Delete(bacon).Error
+	err = db.Session().Delete(beacon).Error
 	if err != nil {
 		beaconRpcLog.Errorf("Database error: %s", err)
 		return nil, ErrDatabaseFailure
@@ -83,13 +83,13 @@ func (rpc *Server) RmBeacon(ctx context.Context, req *clientpb.Bacon) (*commonpb
 	return &commonpb.Empty{}, nil
 }
 
-// GetBeaconTasks - Get a list of tasks for a specific bacon
-func (rpc *Server) GetBeaconTasks(ctx context.Context, req *clientpb.Bacon) (*clientpb.BaconTasks, error) {
-	bacon, err := db.BeaconByID(req.ID)
+// GetBeaconTasks - Get a list of tasks for a specific beacon
+func (rpc *Server) GetBeaconTasks(ctx context.Context, req *clientpb.Beacon) (*clientpb.BaconTasks, error) {
+	beacon, err := db.BeaconByID(req.ID)
 	if err != nil {
 		return nil, ErrInvalidBeaconID
 	}
-	tasks, err := db.BeaconTasksByBeaconID(bacon.ID.String())
+	tasks, err := db.BeaconTasksByBeaconID(beacon.ID.String())
 	return &clientpb.BaconTasks{Tasks: tasks}, err
 }
 
@@ -102,7 +102,7 @@ func (rpc *Server) GetBeaconTaskContent(ctx context.Context, req *clientpb.Beaco
 	return task, nil
 }
 
-// CancelBeaconTask - Cancel a bacon task
+// CancelBeaconTask - Cancel a beacon task
 func (rpc *Server) CancelBeaconTask(ctx context.Context, req *clientpb.BeaconTask) (*clientpb.BeaconTask, error) {
 	task, err := db.BeaconTaskByID(req.ID)
 	if err != nil {
@@ -126,15 +126,15 @@ func (rpc *Server) CancelBeaconTask(ctx context.Context, req *clientpb.BeaconTas
 	return task, nil
 }
 
-// UpdateBeaconIntegrityInformation - Update process integrity information for a bacon
+// UpdateBeaconIntegrityInformation - Update process integrity information for a beacon
 func (rpc *Server) UpdateBeaconIntegrityInformation(ctx context.Context, req *clientpb.BeaconIntegrity) (*commonpb.Empty, error) {
 	resp := &commonpb.Empty{}
-	bacon, err := db.BeaconByID(req.BaconID)
-	if err != nil || bacon == nil {
+	beacon, err := db.BeaconByID(req.BaconID)
+	if err != nil || beacon == nil {
 		return resp, ErrInvalidBeaconID
 	}
-	bacon.Integrity = req.Integrity
-	err = db.Session().Save(bacon).Error
+	beacon.Integrity = req.Integrity
+	err = db.Session().Save(beacon).Error
 	if err != nil {
 		return resp, err
 	}

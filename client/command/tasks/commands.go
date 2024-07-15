@@ -14,7 +14,7 @@ import (
 func Commands(con *console.SliverClient) []*cobra.Command {
 	tasksCmd := &cobra.Command{
 		Use:   consts.TasksStr,
-		Short: "Bacon task management",
+		Short: "Beacon task management",
 		Long:  help.GetHelpFor([]string{consts.TasksStr}),
 		Run: func(cmd *cobra.Command, args []string) {
 			TasksCmd(cmd, con, args)
@@ -31,7 +31,7 @@ func Commands(con *console.SliverClient) []*cobra.Command {
 
 	fetchCmd := &cobra.Command{
 		Use:   consts.FetchStr,
-		Short: "Fetch the details of a bacon task",
+		Short: "Fetch the details of a beacon task",
 		Long:  help.GetHelpFor([]string{consts.TasksStr, consts.FetchStr}),
 		Args:  cobra.RangeArgs(0, 1),
 		Run: func(cmd *cobra.Command, args []string) {
@@ -39,11 +39,11 @@ func Commands(con *console.SliverClient) []*cobra.Command {
 		},
 	}
 	tasksCmd.AddCommand(fetchCmd)
-	carapace.Gen(fetchCmd).PositionalCompletion(BeaconTaskIDCompleter(con).Usage("bacon task ID"))
+	carapace.Gen(fetchCmd).PositionalCompletion(BeaconTaskIDCompleter(con).Usage("beacon task ID"))
 
 	cancelCmd := &cobra.Command{
 		Use:   consts.CancelStr,
-		Short: "Cancel a pending bacon task",
+		Short: "Cancel a pending beacon task",
 		Long:  help.GetHelpFor([]string{consts.TasksStr, consts.CancelStr}),
 		Args:  cobra.RangeArgs(0, 1),
 		Run: func(cmd *cobra.Command, args []string) {
@@ -51,7 +51,7 @@ func Commands(con *console.SliverClient) []*cobra.Command {
 		},
 	}
 	tasksCmd.AddCommand(cancelCmd)
-	carapace.Gen(cancelCmd).PositionalCompletion(BeaconPendingTasksCompleter(con).Usage("bacon task ID"))
+	carapace.Gen(cancelCmd).PositionalCompletion(BeaconPendingTasksCompleter(con).Usage("beacon task ID"))
 
 	return []*cobra.Command{tasksCmd}
 }

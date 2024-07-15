@@ -32,11 +32,11 @@ import (
 
 // GetSystemCmd - Windows only, attempt to get SYSTEM on the remote system
 func GetSystemCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
-	session, bacon := con.ActiveTarget.GetInteractive()
-	if session == nil && bacon == nil {
+	session, beacon := con.ActiveTarget.GetInteractive()
+	if session == nil && beacon == nil {
 		return
 	}
-	targetOS := getOS(session, bacon)
+	targetOS := getOS(session, beacon)
 	if targetOS != "windows" {
 		con.PrintErrorf("Command only supported on Windows.\n")
 		return

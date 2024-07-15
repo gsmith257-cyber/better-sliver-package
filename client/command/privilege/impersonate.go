@@ -32,8 +32,8 @@ import (
 
 // ImpersonateCmd - Windows only, impersonate a user token
 func ImpersonateCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
-	session, bacon := con.ActiveTarget.GetInteractive()
-	if session == nil && bacon == nil {
+	session, beacon := con.ActiveTarget.GetInteractive()
+	if session == nil && beacon == nil {
 		return
 	}
 

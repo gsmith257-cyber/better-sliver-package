@@ -39,11 +39,11 @@ var (
 	// ErrNoSelection - No selection made
 	ErrNoSelection = errors.New("no selection")
 	// ErrBeaconNotFound
-	ErrBeaconNotFound = errors.New("no bacon found for this ID")
+	ErrBeaconNotFound = errors.New("no beacon found for this ID")
 )
 
 // SelectBeacon - Interactive menu for the user to select an session, optionally only display live sessions
-func SelectBeacon(con *console.SliverClient) (*clientpb.Bacon, error) {
+func SelectBeacon(con *console.SliverClient) (*clientpb.Beacon, error) {
 	grpcCtx, cancel := con.GrpcContext(nil)
 	defer cancel()
 	beacons, err := con.Rpc.GetBeacons(grpcCtx, &commonpb.Empty{})
@@ -54,9 +54,9 @@ func SelectBeacon(con *console.SliverClient) (*clientpb.Bacon, error) {
 		return nil, ErrNoBeacons
 	}
 
-	beaconsMap := map[string]*clientpb.Bacon{}
-	for _, bacon := range beacons.Beacons {
-		beaconsMap[bacon.ID] = bacon
+	beaconsMap := map[string]*clientpb.Beacon{}
+	for _, beacon := range beacons.Beacons {
+		beaconsMap[beacon.ID] = beacon
 	}
 	keys := []string{}
 	for baconID := range beaconsMap {
@@ -69,14 +69,14 @@ func SelectBeacon(con *console.SliverClient) (*clientpb.Bacon, error) {
 
 	// Column Headers
 	for _, key := range keys {
-		bacon := beaconsMap[key]
+		beacon := beaconsMap[key]
 		fmt.Fprintf(table, "%s\t%s\t%s\t%s\t%s\t%s\n",
-			bacon.ID,
-			bacon.Name,
-			bacon.RemoteAddress,
-			bacon.Hostname,
-			bacon.Username,
-			fmt.Sprintf("%s/%s", bacon.OS, bacon.Arch),
+			beacon.ID,
+			beacon.Name,
+			beacon.RemoteAddress,
+			beacon.Hostname,
+			beacon.Username,
+			fmt.Sprintf("%s/%s", beacon.OS, beacon.Arch),
 		)
 	}
 	table.Flush()
@@ -84,7 +84,7 @@ func SelectBeacon(con *console.SliverClient) (*clientpb.Bacon, error) {
 	options := strings.Split(outputBuf.String(), "\n")
 	options = options[:len(options)-1] // Remove the last empty option
 	prompt := &survey.Select{
-		Message: "Select a bacon:",
+		Message: "Select a beacon:",
 		Options: options,
 	}
 	selected := ""
@@ -102,7 +102,7 @@ func SelectBeacon(con *console.SliverClient) (*clientpb.Bacon, error) {
 	return nil, ErrNoSelection
 }
 
-func GetBeacon(con *console.SliverClient, baconID string) (*clientpb.Bacon, error) {
+func GetBeacon(con *console.SliverClient, baconID string) (*clientpb.Beacon, error) {
 	grpcCtx, cancel := con.GrpcContext(nil)
 	defer cancel()
 	beacons, err := con.Rpc.GetBeacons(grpcCtx, &commonpb.Empty{})
@@ -112,9 +112,9 @@ func GetBeacon(con *console.SliverClient, baconID string) (*clientpb.Bacon, erro
 	if len(beacons.Beacons) == 0 {
 		return nil, ErrNoBeacons
 	}
-	for _, bacon := range beacons.Beacons {
-		if bacon.ID == baconID || strings.HasPrefix(bacon.ID, baconID) {
-			return bacon, nil
+	for _, beacon := range beacons.Beacons {
+		if beacon.ID == baconID || strings.HasPrefix(beacon.ID, baconID) {
+			return beacon, nil
 		}
 	}
 	return nil, ErrBeaconNotFound

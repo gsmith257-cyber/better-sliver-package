@@ -154,7 +154,7 @@ func SetReconnectInterval(interval int64) {
 	reconnectInterval = time.Duration(interval)
 }
 
-// GetJitter - Get the bacon jitter {{if .Config.IsBeacon}}
+// GetJitter - Get the beacon jitter {{if .Config.IsBeacon}}
 func GetJitter() int64 {
 	if jitter == time.Duration(0) {
 		configJitter, err := strconv.ParseInt(`{{.Config.BaconJitter}}`, 10, 64)
@@ -173,7 +173,7 @@ func SetJitter(newJitter int64) {
 
 // {{end}} - IsBeacon
 
-// GetInterval - Get the bacon interval {{if .Config.IsBeacon}}
+// GetInterval - Get the beacon interval {{if .Config.IsBeacon}}
 func GetInterval() int64 {
 	if interval == time.Duration(0) {
 		configInterval, err := strconv.ParseInt(`{{.Config.BaconInterval}}`, 10, 64)

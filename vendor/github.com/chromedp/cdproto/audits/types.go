@@ -303,7 +303,7 @@ func (t MixedContentResourceType) String() string {
 const (
 	MixedContentResourceTypeAttributionSrc   MixedContentResourceType = "AttributionSrc"
 	MixedContentResourceTypeAudio            MixedContentResourceType = "Audio"
-	MixedContentResourceTypeBeacon           MixedContentResourceType = "Bacon"
+	MixedContentResourceTypeBeacon           MixedContentResourceType = "Beacon"
 	MixedContentResourceTypeCSPReport        MixedContentResourceType = "CSPReport"
 	MixedContentResourceTypeDownload         MixedContentResourceType = "Download"
 	MixedContentResourceTypeEventSource      MixedContentResourceType = "EventSource"

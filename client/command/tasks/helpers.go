@@ -15,7 +15,7 @@ import (
 	"github.com/rsteube/carapace"
 )
 
-// SelectBeaconTask - Select a bacon task interactively.
+// SelectBeaconTask - Select a beacon task interactively.
 func SelectBeaconTask(tasks []*clientpb.BeaconTask) (*clientpb.BeaconTask, error) {
 	// Render selection table
 	buf := bytes.NewBufferString("")
@@ -33,7 +33,7 @@ func SelectBeaconTask(tasks []*clientpb.BeaconTask) (*clientpb.BeaconTask, error
 
 	selected := ""
 	prompt := &survey.Select{
-		Message: "Select a bacon task:",
+		Message: "Select a beacon task:",
 		Options: options,
 	}
 	err := survey.AskOne(prompt, &selected)
@@ -51,12 +51,12 @@ func SelectBeaconTask(tasks []*clientpb.BeaconTask) (*clientpb.BeaconTask, error
 // BeaconTaskIDCompleter returns a structured list of tasks completions, grouped by state.
 func BeaconTaskIDCompleter(con *console.SliverClient) carapace.Action {
 	callback := func(ctx carapace.Context) carapace.Action {
-		bacon := con.ActiveTarget.GetBeacon()
-		if bacon == nil {
-			return carapace.ActionMessage("no active bacon")
+		beacon := con.ActiveTarget.GetBeacon()
+		if beacon == nil {
+			return carapace.ActionMessage("no active beacon")
 		}
 
-		BaconTasks, err := con.Rpc.GetBeaconTasks(context.Background(), &clientpb.Bacon{ID: bacon.ID})
+		BaconTasks, err := con.Rpc.GetBeaconTasks(context.Background(), &clientpb.Beacon{ID: beacon.ID})
 		if err != nil {
 			return carapace.ActionMessage("Failed to fetch tasks: %s", err.Error())
 		}
@@ -116,12 +116,12 @@ func BeaconTaskIDCompleter(con *console.SliverClient) carapace.Action {
 // BeaconPendingTasksCompleter completes pending tasks.
 func BeaconPendingTasksCompleter(con *console.SliverClient) carapace.Action {
 	callback := func(ctx carapace.Context) carapace.Action {
-		bacon := con.ActiveTarget.GetBeacon()
-		if bacon == nil {
-			return carapace.ActionMessage("no active bacon")
+		beacon := con.ActiveTarget.GetBeacon()
+		if beacon == nil {
+			return carapace.ActionMessage("no active beacon")
 		}
 
-		BaconTasks, err := con.Rpc.GetBeaconTasks(context.Background(), &clientpb.Bacon{ID: bacon.ID})
+		BaconTasks, err := con.Rpc.GetBeaconTasks(context.Background(), &clientpb.Beacon{ID: beacon.ID})
 		if err != nil {
 			return carapace.ActionMessage("Failed to fetch tasks: %s", err.Error())
 		}

@@ -30,8 +30,8 @@ import (
 
 // ChtimesCmd - Change the access and modified time of a file on the remote file system.
 func ChtimesCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
-	session, bacon := con.ActiveTarget.GetInteractive()
-	if session == nil && bacon == nil {
+	session, beacon := con.ActiveTarget.GetInteractive()
+	if session == nil && beacon == nil {
 		return
 	}
 	// DateTime layout (https://pkg.go.dev/time)

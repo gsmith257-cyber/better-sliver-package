@@ -32,11 +32,11 @@ import (
 
 // RegListSubKeysCmd - List sub registry keys
 func RegListSubKeysCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
-	session, bacon := con.ActiveTarget.GetInteractive()
-	if session == nil && bacon == nil {
+	session, beacon := con.ActiveTarget.GetInteractive()
+	if session == nil && beacon == nil {
 		return
 	}
-	targetOS := getOS(session, bacon)
+	targetOS := getOS(session, beacon)
 	if targetOS != "windows" {
 		con.PrintErrorf("Registry operations can only target Windows\n")
 		return
@@ -88,8 +88,8 @@ func PrintListSubKeys(regList *sliverpb.RegistrySubKeyList, hive string, regPath
 
 // RegListValuesCmd - List registry values
 func RegListValuesCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
-	session, bacon := con.ActiveTarget.GetInteractive()
-	if session == nil && bacon == nil {
+	session, beacon := con.ActiveTarget.GetInteractive()
+	if session == nil && beacon == nil {
 		return
 	}
 

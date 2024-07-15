@@ -36,7 +36,7 @@ import (
 type ImplantBuildFilter struct {
 	GOOS    string
 	GOARCH  string
-	Bacon  bool
+	Beacon  bool
 	Session bool
 	Format  string
 	Debug   bool
@@ -85,7 +85,7 @@ func PrintImplantBuilds(builds *clientpb.ImplantBuilds, filters ImplantBuildFilt
 		if filters.GOARCH != "" && config.GOARCH != filters.GOARCH {
 			continue
 		}
-		if filters.Bacon && !config.IsBeacon {
+		if filters.Beacon && !config.IsBeacon {
 			continue
 		}
 		if filters.Session && config.IsBeacon {
@@ -105,7 +105,7 @@ func PrintImplantBuilds(builds *clientpb.ImplantBuilds, filters ImplantBuildFilt
 		}
 
 		if config.IsBeacon {
-			implantType += "bacon"
+			implantType += "beacon"
 		} else {
 			implantType += "session"
 		}
@@ -156,7 +156,7 @@ func ImplantBuildNameCompleter(con *console.SliverClient) carapace.Action {
 			if filters.GOARCH != "" && config.GOARCH != filters.GOARCH {
 				continue
 			}
-			if filters.Bacon && !config.IsBeacon {
+			if filters.Beacon && !config.IsBeacon {
 				continue
 			}
 			if filters.Session && config.IsBeacon {
@@ -197,7 +197,7 @@ func ImplantBuildNameCompleter(con *console.SliverClient) carapace.Action {
 
 		return action.Invoke(ctx).Merge(
 			carapace.ActionValuesDescribed(sessions...).Tag("session builds").Invoke(ctx),
-			carapace.ActionValuesDescribed(results...).Tag("bacon builds").Invoke(ctx),
+			carapace.ActionValuesDescribed(results...).Tag("beacon builds").Invoke(ctx),
 		).ToA()
 	}
 

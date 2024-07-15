@@ -119,8 +119,8 @@ func removeSessionsAndBeacons(con *console.SliverClient) error {
 		return err
 	}
 
-	for _, bacon := range beacons.Beacons {
-		_, err = con.Rpc.RmBeacon(context.Background(), &clientpb.Bacon{ID: bacon.ID})
+	for _, beacon := range beacons.Beacons {
+		_, err = con.Rpc.RmBeacon(context.Background(), &clientpb.Beacon{ID: beacon.ID})
 		if err != nil {
 			return err
 		}

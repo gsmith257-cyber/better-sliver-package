@@ -41,9 +41,9 @@ service SliverRPC {
   
   // *** Beacons ***
   rpc GetBeacons(commonpb.Empty) returns (clientpb.Beacons);
-  rpc GetBeacon(clientpb.Bacon) returns (clientpb.Bacon);
-  rpc RmBeacon(clientpb.Bacon) returns (commonpb.Empty);
-  rpc GetBeaconTasks(clientpb.Bacon) returns (clientpb.BaconTasks);
+  rpc GetBeacon(clientpb.Beacon) returns (clientpb.Beacon);
+  rpc RmBeacon(clientpb.Beacon) returns (commonpb.Empty);
+  rpc GetBeaconTasks(clientpb.Beacon) returns (clientpb.BaconTasks);
   rpc GetBeaconTaskContent(clientpb.BeaconTask) returns (clientpb.BeaconTask);
   rpc CancelBeaconTask(clientpb.BeaconTask) returns (clientpb.BeaconTask);
   rpc UpdateBeaconIntegrityInformation(clientpb.BeaconIntegrity) returns (commonpb.Empty);
@@ -241,7 +241,7 @@ service SliverRPC {
   rpc StopRportFwdListener(sliverpb.RportFwdStopListenerReq)
       returns (sliverpb.RportFwdListener);
 
-  // *** Bacon *** -only commands
+  // *** Beacon *** -only commands
   rpc OpenSession(sliverpb.OpenSession) returns (sliverpb.OpenSession);
   rpc CloseSession(sliverpb.CloseSession) returns (commonpb.Empty);
 

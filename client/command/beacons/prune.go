@@ -45,15 +45,15 @@ func BeaconsPruneCmd(cmd *cobra.Command, con *console.SliverClient, args []strin
 		con.PrintErrorf("%s\n", err)
 		return
 	}
-	pruneBeacons := []*clientpb.Bacon{}
-	for _, bacon := range beacons.Beacons {
-		nextCheckin := time.Unix(bacon.NextCheckin, 0)
+	pruneBeacons := []*clientpb.Beacon{}
+	for _, beacon := range beacons.Beacons {
+		nextCheckin := time.Unix(beacon.NextCheckin, 0)
 		if time.Now().Before(nextCheckin) {
 			continue
 		}
 		delta := time.Since(nextCheckin)
 		if pruneDuration <= delta {
-			pruneBeacons = append(pruneBeacons, bacon)
+			pruneBeacons = append(pruneBeacons, beacon)
 		}
 	}
 	if len(pruneBeacons) == 0 {
@@ -61,13 +61,13 @@ func BeaconsPruneCmd(cmd *cobra.Command, con *console.SliverClient, args []strin
 		return
 	}
 	con.PrintWarnf("The following beacons and their tasks will be removed:\n")
-	for index, bacon := range pruneBeacons {
-		bacon, err := con.Rpc.GetBeacon(grpcCtx, &clientpb.Bacon{ID: bacon.ID})
+	for index, beacon := range pruneBeacons {
+		beacon, err := con.Rpc.GetBeacon(grpcCtx, &clientpb.Beacon{ID: beacon.ID})
 		if err != nil {
 			con.PrintErrorf("%s\n", err)
 			continue
 		}
-		con.Printf("\t%d. %s (%s)\n", (index + 1), bacon.Name, bacon.ID)
+		con.Printf("\t%d. %s (%s)\n", (index + 1), beacon.Name, beacon.ID)
 	}
 	con.Println()
 	confirm := false
@@ -77,12 +77,12 @@ func BeaconsPruneCmd(cmd *cobra.Command, con *console.SliverClient, args []strin
 		return
 	}
 	errCount := 0
-	for _, bacon := range pruneBeacons {
-		_, err := con.Rpc.RmBeacon(grpcCtx, &clientpb.Bacon{ID: bacon.ID})
+	for _, beacon := range pruneBeacons {
+		_, err := con.Rpc.RmBeacon(grpcCtx, &clientpb.Beacon{ID: beacon.ID})
 		if err != nil {
 			con.PrintErrorf("%s\n", err)
 			errCount++
 		}
 	}
-	con.PrintInfof("Pruned %d bacon(s)\n", len(pruneBeacons)-errCount)
+	con.PrintInfof("Pruned %d beacon(s)\n", len(pruneBeacons)-errCount)
 }

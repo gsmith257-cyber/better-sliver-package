@@ -905,8 +905,8 @@ func IOCByID(id string) (*clientpb.IOC, error) {
 	return ioc.ToProtobuf(), err
 }
 
-// BeaconByID - Select a Bacon by ID
-func BeaconByID(id string) (*models.Bacon, error) {
+// BeaconByID - Select a Beacon by ID
+func BeaconByID(id string) (*models.Beacon, error) {
 	if len(id) < 1 {
 		return nil, ErrRecordNotFound
 	}
@@ -915,14 +915,14 @@ func BeaconByID(id string) (*models.Bacon, error) {
 		return nil, ErrRecordNotFound
 	}
 
-	bacon := &models.Bacon{}
+	beacon := &models.Beacon{}
 	err := Session().Where(
-		&models.Bacon{ID: baconID},
-	).First(bacon).Error
-	return bacon, err
+		&models.Beacon{ID: baconID},
+	).First(beacon).Error
+	return beacon, err
 }
 
-// BeaconTasksByBeaconID - Get all tasks for a specific bacon
+// BeaconTasksByBeaconID - Get all tasks for a specific beacon
 // by default will not fetch the request/response columns since
 // these could be arbitrarily large.
 func BeaconTasksByBeaconID(baconID string) ([]*clientpb.BeaconTask, error) {
@@ -966,19 +966,19 @@ func BeaconTaskByID(id string) (*clientpb.BeaconTask, error) {
 	return task.ToProtobuf(true), err
 }
 
-// ListBeacons - Select a Bacon by ID
-func ListBeacons() ([]*clientpb.Bacon, error) {
-	beacons := []*models.Bacon{}
-	err := Session().Where(&models.Bacon{}).Find(&beacons).Error
+// ListBeacons - Select a Beacon by ID
+func ListBeacons() ([]*clientpb.Beacon, error) {
+	beacons := []*models.Beacon{}
+	err := Session().Where(&models.Beacon{}).Find(&beacons).Error
 
-	pbBeacons := []*clientpb.Bacon{}
-	for _, bacon := range beacons {
-		pbBeacons = append(pbBeacons, bacon.ToProtobuf())
+	pbBeacons := []*clientpb.Beacon{}
+	for _, beacon := range beacons {
+		pbBeacons = append(pbBeacons, beacon.ToProtobuf())
 	}
 	return pbBeacons, err
 }
 
-// RenameBeacon - Rename a bacon
+// RenameBeacon - Rename a beacon
 func RenameBeacon(id string, name string) error {
 	if len(id) < 1 {
 		return ErrRecordNotFound
@@ -987,16 +987,16 @@ func RenameBeacon(id string, name string) error {
 	if baconID == uuid.Nil {
 		return ErrRecordNotFound
 	}
-	err := Session().Where(&models.Bacon{
+	err := Session().Where(&models.Beacon{
 		ID: baconID,
-	}).Updates(models.Bacon{Name: name}).Error
+	}).Updates(models.Beacon{Name: name}).Error
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-// PendingBeaconTasksByBeaconID - Select a Bacon by ID, ordered by creation time
+// PendingBeaconTasksByBeaconID - Select a Beacon by ID, ordered by creation time
 func PendingBeaconTasksByBeaconID(id string) ([]*models.BeaconTask, error) {
 	if len(id) < 1 {
 		return nil, ErrRecordNotFound
@@ -1016,7 +1016,7 @@ func PendingBeaconTasksByBeaconID(id string) ([]*models.BeaconTask, error) {
 	return tasks, err
 }
 
-// UpdateBeaconCheckinByID - Update the bacon's last / next checkin
+// UpdateBeaconCheckinByID - Update the beacon's last / next checkin
 func UpdateBeaconCheckinByID(id string, next int64) error {
 	if len(id) < 1 {
 		return ErrRecordNotFound
@@ -1025,9 +1025,9 @@ func UpdateBeaconCheckinByID(id string, next int64) error {
 	if baconID == uuid.Nil {
 		return ErrRecordNotFound
 	}
-	err := Session().Where(&models.Bacon{
+	err := Session().Where(&models.Beacon{
 		ID: baconID,
-	}).Updates(models.Bacon{
+	}).Updates(models.Beacon{
 		LastCheckin: time.Now(),
 		NextCheckin: time.Now().Unix() + next,
 	}).Error

@@ -30,8 +30,8 @@ import (
 	"gorm.io/gorm"
 )
 
-// Bacon - Represents a host machine
-type Bacon struct {
+// Beacon - Represents a host machine
+type Beacon struct {
 	CreatedAt time.Time `gorm:"->;<-:create;"`
 
 	ID                uuid.UUID `gorm:"type:uuid;"`
@@ -65,14 +65,14 @@ type Bacon struct {
 }
 
 // BeforeCreate - GORM hook
-func (b *Bacon) BeforeCreate(tx *gorm.DB) (err error) {
+func (b *Beacon) BeforeCreate(tx *gorm.DB) (err error) {
 	b.CreatedAt = time.Now()
 	b.Integrity = "-"
 	return nil
 }
 
-func (b *Bacon) ToProtobuf() *clientpb.Bacon {
-	return &clientpb.Bacon{
+func (b *Beacon) ToProtobuf() *clientpb.Beacon {
+	return &clientpb.Beacon{
 		ID:                b.ID.String(),
 		Name:              b.Name,
 		Hostname:          b.Hostname,
@@ -100,7 +100,7 @@ func (b *Bacon) ToProtobuf() *clientpb.Bacon {
 	}
 }
 
-func (b *Bacon) Task(envelope *sliverpb.Envelope) (*BeaconTask, error) {
+func (b *Beacon) Task(envelope *sliverpb.Envelope) (*BeaconTask, error) {
 	data, err := proto.Marshal(envelope)
 	if err != nil {
 		return nil, err

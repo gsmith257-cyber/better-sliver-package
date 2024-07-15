@@ -262,9 +262,9 @@ const (
 	// MsgListExtensionsReq - List loaded extensions
 	MsgListExtensionsReq
 
-	// MsgBeaconRegister - Register a new bacon
+	// MsgBeaconRegister - Register a new beacon
 	MsgBeaconRegister
-	// MsgBeaconTasks - Send/recv batches of bacon tasks
+	// MsgBeaconTasks - Send/recv batches of beacon tasks
 	MsgBeaconTasks
 
 	// MsgOpenSession - Open a new session

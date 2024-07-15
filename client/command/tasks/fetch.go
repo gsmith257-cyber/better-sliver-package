@@ -45,20 +45,20 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-// TasksFetchCmd - Manage bacon tasks.
+// TasksFetchCmd - Manage beacon tasks.
 func TasksFetchCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
-	bacon := con.ActiveTarget.GetBeaconInteractive()
-	if bacon == nil {
+	beacon := con.ActiveTarget.GetBeaconInteractive()
+	if beacon == nil {
 		return
 	}
-	BaconTasks, err := con.Rpc.GetBeaconTasks(context.Background(), &clientpb.Bacon{ID: bacon.ID})
+	BaconTasks, err := con.Rpc.GetBeaconTasks(context.Background(), &clientpb.Beacon{ID: beacon.ID})
 	if err != nil {
 		con.PrintErrorf("%s\n", err)
 		return
 	}
 	tasks := BaconTasks.Tasks
 	if len(tasks) == 0 {
-		con.PrintErrorf("No tasks for bacon\n")
+		con.PrintErrorf("No tasks for beacon\n")
 		return
 	}
 
@@ -69,7 +69,7 @@ func TasksFetchCmd(cmd *cobra.Command, con *console.SliverClient, args []string)
 	if idArg != "" {
 		tasks = filterTasksByID(idArg, tasks)
 		if len(tasks) == 0 {
-			con.PrintErrorf("No bacon task found with id %s\n", idArg)
+			con.PrintErrorf("No beacon task found with id %s\n", idArg)
 			return
 		}
 	}
@@ -78,7 +78,7 @@ func TasksFetchCmd(cmd *cobra.Command, con *console.SliverClient, args []string)
 	if filter != "" {
 		tasks = filterTasksByTaskType(filter, tasks)
 		if len(tasks) == 0 {
-			con.PrintErrorf("No bacon tasks with filter type '%s'\n", filter)
+			con.PrintErrorf("No beacon tasks with filter type '%s'\n", filter)
 			return
 		}
 	}
@@ -122,11 +122,11 @@ func filterTasksByTaskType(taskType string, tasks []*clientpb.BeaconTask) []*cli
 	return filteredTasks
 }
 
-// PrintTask - Print the details of a bacon task.
+// PrintTask - Print the details of a beacon task.
 func PrintTask(task *clientpb.BeaconTask, con *console.SliverClient) {
 	tw := table.NewWriter()
 	tw.SetStyle(settings.GetTableWithBordersStyle(con))
-	tw.AppendRow(table.Row{console.Bold + "Bacon Task" + console.Normal, task.ID})
+	tw.AppendRow(table.Row{console.Bold + "Beacon Task" + console.Normal, task.ID})
 	tw.AppendSeparator()
 	tw.AppendRow(table.Row{"State", emojiState(task.State) + " " + prettyState(strings.Title(task.State))})
 	tw.AppendRow(table.Row{"Description", task.Description})
@@ -243,10 +243,10 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverClient) {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
 			return
 		}
-		bacon, _ := con.Rpc.GetBeacon(context.Background(), &clientpb.Bacon{ID: task.BaconID})
+		beacon, _ := con.Rpc.GetBeacon(context.Background(), &clientpb.Beacon{ID: task.BaconID})
 		hostname := "hostname"
-		if bacon != nil {
-			hostname = bacon.Hostname
+		if beacon != nil {
+			hostname = beacon.Hostname
 		}
 		assemblyPath := ""
 
@@ -304,10 +304,10 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverClient) {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
 			return
 		}
-		bacon, _ := con.Rpc.GetBeacon(context.Background(), &clientpb.Bacon{ID: task.BaconID})
+		beacon, _ := con.Rpc.GetBeacon(context.Background(), &clientpb.Beacon{ID: task.BaconID})
 		hostname := "hostname"
-		if bacon != nil {
-			hostname = bacon.Hostname
+		if beacon != nil {
+			hostname = beacon.Hostname
 		}
 
 		f := pflag.NewFlagSet(constants.SideloadStr, pflag.ContinueOnError)
@@ -326,10 +326,10 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverClient) {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
 			return
 		}
-		bacon, _ := con.Rpc.GetBeacon(context.Background(), &clientpb.Bacon{ID: task.BaconID})
+		beacon, _ := con.Rpc.GetBeacon(context.Background(), &clientpb.Beacon{ID: task.BaconID})
 		hostname := "hostname"
-		if bacon != nil {
-			hostname = bacon.Hostname
+		if beacon != nil {
+			hostname = beacon.Hostname
 		}
 
 		f := pflag.NewFlagSet(constants.SpawnDllStr, pflag.ContinueOnError)
@@ -504,12 +504,12 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverClient) {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
 			return
 		}
-		bacon, err := con.Rpc.GetBeacon(context.Background(), &clientpb.Bacon{ID: task.BaconID})
+		beacon, err := con.Rpc.GetBeacon(context.Background(), &clientpb.Beacon{ID: task.BaconID})
 		if err != nil {
-			con.PrintErrorf("Failed to fetch bacon: %s\n", err)
+			con.PrintErrorf("Failed to fetch beacon: %s\n", err)
 			return
 		}
-		network.PrintNetstat(netstat, bacon.PID, bacon.ActiveC2, false, con)
+		network.PrintNetstat(netstat, beacon.PID, beacon.ActiveC2, false, con)
 
 	// ---------------------
 	// Privilege commands
@@ -521,12 +521,12 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverClient) {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
 			return
 		}
-		bacon, err := con.Rpc.GetBeacon(context.Background(), &clientpb.Bacon{ID: task.BaconID})
+		beacon, err := con.Rpc.GetBeacon(context.Background(), &clientpb.Beacon{ID: task.BaconID})
 		if err != nil {
-			con.PrintErrorf("Failed to fetch bacon: %s\n", err)
+			con.PrintErrorf("Failed to fetch beacon: %s\n", err)
 			return
 		}
-		privilege.PrintGetPrivs(privs, bacon.PID, con)
+		privilege.PrintGetPrivs(privs, beacon.PID, con)
 
 	case sliverpb.MsgInvokeGetSystemReq:
 		getSystem := &sliverpb.GetSystem{}
@@ -588,12 +588,12 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverClient) {
 			con.PrintErrorf("Failed to decode task request: %s\n", err)
 			return
 		}
-		bacon, err := con.Rpc.GetBeacon(context.Background(), &clientpb.Bacon{ID: task.BaconID})
+		beacon, err := con.Rpc.GetBeacon(context.Background(), &clientpb.Beacon{ID: task.BaconID})
 		if err != nil {
-			con.PrintErrorf("Failed to fetch bacon: %s\n", err)
+			con.PrintErrorf("Failed to fetch beacon: %s\n", err)
 			return
 		}
-		privilege.PrintRunAs(runAs, runAsReq.ProcessName, runAsReq.Args, bacon.Name, con)
+		privilege.PrintRunAs(runAs, runAsReq.ProcessName, runAsReq.Args, beacon.Name, con)
 
 	// ---------------------
 	// Processes commands
@@ -614,9 +614,9 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverClient) {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
 			return
 		}
-		bacon, err := con.Rpc.GetBeacon(context.Background(), &clientpb.Bacon{ID: task.BaconID})
+		beacon, err := con.Rpc.GetBeacon(context.Background(), &clientpb.Beacon{ID: task.BaconID})
 		if err != nil {
-			con.PrintErrorf("Failed to get bacon: %s\n", err)
+			con.PrintErrorf("Failed to get beacon: %s\n", err)
 			return
 		}
 
@@ -629,7 +629,7 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverClient) {
 		f.IntP("skip-pages", "S", 0, "skip the first n page(s)")
 		f.BoolP("tree", "T", false, "print process tree")
 
-		processes.PrintPS(bacon.OS, ps, true, f, con)
+		processes.PrintPS(beacon.OS, ps, true, f, con)
 
 	case sliverpb.MsgTerminateReq:
 		terminate := &sliverpb.Terminate{}

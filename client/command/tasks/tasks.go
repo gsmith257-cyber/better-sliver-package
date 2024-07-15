@@ -31,13 +31,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// TasksCmd - Manage bacon tasks.
+// TasksCmd - Manage beacon tasks.
 func TasksCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
-	bacon := con.ActiveTarget.GetBeaconInteractive()
-	if bacon == nil {
+	beacon := con.ActiveTarget.GetBeaconInteractive()
+	if beacon == nil {
 		return
 	}
-	BaconTasks, err := con.Rpc.GetBeaconTasks(context.Background(), &clientpb.Bacon{ID: bacon.ID})
+	BaconTasks, err := con.Rpc.GetBeaconTasks(context.Background(), &clientpb.Beacon{ID: beacon.ID})
 	if err != nil {
 		con.PrintErrorf("%s\n", err)
 		return
@@ -45,7 +45,7 @@ func TasksCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
 	PrintBeaconTasks(BaconTasks.Tasks, cmd, con)
 }
 
-// PrintBeaconTasks - Print bacon tasks.
+// PrintBeaconTasks - Print beacon tasks.
 func PrintBeaconTasks(tasks []*clientpb.BeaconTask, cmd *cobra.Command, con *console.SliverClient) {
 	tw := table.NewWriter()
 	tw.SetStyle(settings.GetTableStyle(con))

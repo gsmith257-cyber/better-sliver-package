@@ -47,75 +47,75 @@ func beaconRegisterHandler(implantConn *core.ImplantConnection, data []byte) *sl
 	beaconReg := &sliverpb.BaconRegister{}
 	err := proto.Unmarshal(data, beaconReg)
 	if err != nil {
-		beaconHandlerLog.Errorf("Error decoding bacon registration message: %s", err)
+		beaconHandlerLog.Errorf("Error decoding beacon registration message: %s", err)
 		return nil
 	}
-	beaconHandlerLog.Infof("Bacon registration from %s", beaconReg.ID)
-	bacon, err := db.BeaconByID(beaconReg.ID)
-	beaconHandlerLog.Debugf("Found %v err = %s", bacon, err)
+	beaconHandlerLog.Infof("Beacon registration from %s", beaconReg.ID)
+	beacon, err := db.BeaconByID(beaconReg.ID)
+	beaconHandlerLog.Debugf("Found %v err = %s", beacon, err)
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		beaconHandlerLog.Errorf("Database query error %s", err)
 		return nil
 	}
 	beaconUUID, _ := uuid.FromString(beaconReg.ID)
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		bacon = &models.Bacon{
+		beacon = &models.Beacon{
 			ID: beaconUUID,
 		}
 	}
 	beaconRegUUID, _ := uuid.FromString(beaconReg.Register.Uuid)
-	bacon.Name = beaconReg.Register.Name
-	bacon.Hostname = beaconReg.Register.Hostname
-	bacon.UUID = beaconRegUUID
-	bacon.Username = beaconReg.Register.Username
-	bacon.UID = beaconReg.Register.Uid
-	bacon.GID = beaconReg.Register.Gid
-	bacon.OS = beaconReg.Register.Os
-	bacon.Arch = beaconReg.Register.Arch
-	bacon.Transport = implantConn.Transport
-	bacon.RemoteAddress = implantConn.RemoteAddress
-	bacon.PID = beaconReg.Register.Pid
-	bacon.Filename = beaconReg.Register.Filename
-	bacon.LastCheckin = implantConn.GetLastMessage()
-	bacon.Version = beaconReg.Register.Version
-	bacon.ReconnectInterval = beaconReg.Register.ReconnectInterval
-	bacon.ActiveC2 = beaconReg.Register.ActiveC2
-	bacon.ProxyURL = beaconReg.Register.ProxyURL
-	// bacon.ConfigID = uuid.FromStringOrNil(beaconReg.Register.ConfigID)
-	bacon.Locale = beaconReg.Register.Locale
+	beacon.Name = beaconReg.Register.Name
+	beacon.Hostname = beaconReg.Register.Hostname
+	beacon.UUID = beaconRegUUID
+	beacon.Username = beaconReg.Register.Username
+	beacon.UID = beaconReg.Register.Uid
+	beacon.GID = beaconReg.Register.Gid
+	beacon.OS = beaconReg.Register.Os
+	beacon.Arch = beaconReg.Register.Arch
+	beacon.Transport = implantConn.Transport
+	beacon.RemoteAddress = implantConn.RemoteAddress
+	beacon.PID = beaconReg.Register.Pid
+	beacon.Filename = beaconReg.Register.Filename
+	beacon.LastCheckin = implantConn.GetLastMessage()
+	beacon.Version = beaconReg.Register.Version
+	beacon.ReconnectInterval = beaconReg.Register.ReconnectInterval
+	beacon.ActiveC2 = beaconReg.Register.ActiveC2
+	beacon.ProxyURL = beaconReg.Register.ProxyURL
+	// beacon.ConfigID = uuid.FromStringOrNil(beaconReg.Register.ConfigID)
+	beacon.Locale = beaconReg.Register.Locale
 
-	bacon.Interval = beaconReg.Interval
-	bacon.Jitter = beaconReg.Jitter
-	bacon.NextCheckin = time.Now().Unix() + beaconReg.NextCheckin
+	beacon.Interval = beaconReg.Interval
+	beacon.Jitter = beaconReg.Jitter
+	beacon.NextCheckin = time.Now().Unix() + beaconReg.NextCheckin
 
-	err = db.Session().Save(bacon).Error
+	err = db.Session().Save(beacon).Error
 	if err != nil {
 		beaconHandlerLog.Errorf("Database write %s", err)
 	}
 
-	eventData, _ := proto.Marshal(bacon.ToProtobuf())
+	eventData, _ := proto.Marshal(beacon.ToProtobuf())
 	core.EventBroker.Publish(core.Event{
 		EventType: consts.BeaconRegisteredEvent,
 		Data:      eventData,
-		Bacon:    bacon,
+		Beacon:    beacon,
 	})
 
-	go auditLogBeacon(bacon, beaconReg.Register)
+	go auditLogBeacon(beacon, beaconReg.Register)
 	return nil
 }
 
 type auditLogNewBeaconMsg struct {
-	Bacon   *clientpb.Bacon
+	Beacon   *clientpb.Beacon
 	Register *sliverpb.Register
 }
 
-func auditLogBeacon(bacon *models.Bacon, register *sliverpb.Register) {
+func auditLogBeacon(beacon *models.Beacon, register *sliverpb.Register) {
 	msg, err := json.Marshal(auditLogNewBeaconMsg{
-		Bacon:   bacon.ToProtobuf(),
+		Beacon:   beacon.ToProtobuf(),
 		Register: register,
 	})
 	if err != nil {
-		beaconHandlerLog.Errorf("Failed to log new bacon to audit log: %s", err)
+		beaconHandlerLog.Errorf("Failed to log new beacon to audit log: %s", err)
 	} else {
 		log.AuditLogger.Warn(string(msg))
 	}
@@ -125,7 +125,7 @@ func beaconTasksHandler(implantConn *core.ImplantConnection, data []byte) *slive
 	BaconTasks := &sliverpb.BaconTasks{}
 	err := proto.Unmarshal(data, BaconTasks)
 	if err != nil {
-		beaconHandlerLog.Errorf("Error decoding bacon tasks message: %s", err)
+		beaconHandlerLog.Errorf("Error decoding beacon tasks message: %s", err)
 		return nil
 	}
 	go func() {
@@ -136,22 +136,22 @@ func beaconTasksHandler(implantConn *core.ImplantConnection, data []byte) *slive
 	}()
 
 	// If the message contains tasks then process it as results
-	// otherwise send the bacon any pending tasks. Currently we
+	// otherwise send the beacon any pending tasks. Currently we
 	// don't receive results and send pending tasks at the same
 	// time. We only send pending tasks if the request is empty.
-	// If we send the Bacon 0 tasks it should not respond at all.
+	// If we send the Beacon 0 tasks it should not respond at all.
 	if 0 < len(BaconTasks.Tasks) {
-		beaconHandlerLog.Infof("Bacon %s returned %d task result(s)", BaconTasks.ID, len(BaconTasks.Tasks))
+		beaconHandlerLog.Infof("Beacon %s returned %d task result(s)", BaconTasks.ID, len(BaconTasks.Tasks))
 		go beaconTaskResults(BaconTasks.ID, BaconTasks.Tasks)
 		return nil
 	}
 
-	beaconHandlerLog.Infof("Bacon %s requested pending task(s)", BaconTasks.ID)
+	beaconHandlerLog.Infof("Beacon %s requested pending task(s)", BaconTasks.ID)
 
 	// Pending tasks are ordered by their creation time.
 	pendingTasks, err := db.PendingBeaconTasksByBeaconID(BaconTasks.ID)
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-		beaconHandlerLog.Errorf("Bacon task database error: %s", err)
+		beaconHandlerLog.Errorf("Beacon task database error: %s", err)
 		return nil
 	}
 	tasks := []*sliverpb.Envelope{}
@@ -175,10 +175,10 @@ func beaconTasksHandler(implantConn *core.ImplantConnection, data []byte) *slive
 	}
 	taskData, err := proto.Marshal(&sliverpb.BaconTasks{Tasks: tasks})
 	if err != nil {
-		beaconHandlerLog.Errorf("Error marshaling bacon tasks message: %s", err)
+		beaconHandlerLog.Errorf("Error marshaling beacon tasks message: %s", err)
 		return nil
 	}
-	beaconHandlerLog.Infof("Sending %d task(s) to bacon %s", len(pendingTasks), BaconTasks.ID)
+	beaconHandlerLog.Infof("Sending %d task(s) to beacon %s", len(pendingTasks), BaconTasks.ID)
 	return &sliverpb.Envelope{
 		Type: sliverpb.MsgBeaconTasks,
 		Data: taskData,

@@ -36,11 +36,11 @@ import (
 
 // RegWriteCmd - Write to a Windows registry key: registry write --hive HKCU --type dword "software\google\chrome\blbeacon\hello" 32
 func RegWriteCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
-	session, bacon := con.ActiveTarget.GetInteractive()
-	if session == nil && bacon == nil {
+	session, beacon := con.ActiveTarget.GetInteractive()
+	if session == nil && beacon == nil {
 		return
 	}
-	targetOS := getOS(session, bacon)
+	targetOS := getOS(session, beacon)
 	if targetOS != "windows" {
 		con.PrintErrorf("Registry operations can only target Windows\n")
 		return

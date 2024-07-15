@@ -275,7 +275,7 @@ type auditUnaryLogMsg struct {
 	Request  string `json:"request"`
 	Method   string `json:"method"`
 	Session  string `json:"session,omitempty"`
-	Bacon   string `json:"bacon,omitempty"`
+	Beacon   string `json:"beacon,omitempty"`
 	RemoteIP string `json:"remote_ip"`
 	User     string `json:"user"`
 }
@@ -288,7 +288,7 @@ func auditLogUnaryServerInterceptor() grpc.UnaryServerInterceptor {
 			return
 		}
 		middlewareLog.Debugf("Raw request: %s", string(rawRequest))
-		session, bacon, err := getActiveTarget(rawRequest)
+		session, beacon, err := getActiveTarget(rawRequest)
 		if err != nil {
 			middlewareLog.Errorf("Middleware failed to insert details: %s", err)
 		}
@@ -306,9 +306,9 @@ func auditLogUnaryServerInterceptor() grpc.UnaryServerInterceptor {
 			sessionJSON, _ := json.Marshal(session)
 			msg.Session = string(sessionJSON)
 		}
-		if bacon != nil {
-			beaconJSON, _ := json.Marshal(bacon)
-			msg.Bacon = string(beaconJSON)
+		if beacon != nil {
+			beaconJSON, _ := json.Marshal(beacon)
+			msg.Beacon = string(beaconJSON)
 		}
 
 		msgData, _ := json.Marshal(msg)
@@ -333,9 +333,9 @@ func getUser(client *peer.Peer) string {
 	return ""
 }
 
-func getActiveTarget(rawRequest []byte) (*clientpb.Session, *clientpb.Bacon, error) {
+func getActiveTarget(rawRequest []byte) (*clientpb.Session, *clientpb.Beacon, error) {
 
-	var activeBeacon *clientpb.Bacon
+	var activeBeacon *clientpb.Beacon
 	var activeSession *clientpb.Session
 
 	var request map[string]interface{}
@@ -344,7 +344,7 @@ func getActiveTarget(rawRequest []byte) (*clientpb.Session, *clientpb.Bacon, err
 		return nil, nil, err
 	}
 
-	// RPC is not a session/bacon request
+	// RPC is not a session/beacon request
 	if _, ok := request["Request"]; !ok {
 		return nil, nil, nil
 	}
@@ -355,13 +355,13 @@ func getActiveTarget(rawRequest []byte) (*clientpb.Session, *clientpb.Bacon, err
 
 	if rawBeaconID, ok := rpcRequest["BaconID"]; ok {
 		baconID := rawBeaconID.(string)
-		middlewareLog.Debugf("Found Bacon ID: %s", baconID)
-		bacon, err := db.BeaconByID(baconID)
+		middlewareLog.Debugf("Found Beacon ID: %s", baconID)
+		beacon, err := db.BeaconByID(baconID)
 		middlewareLog.Infof("query complete")
 		if err != nil {
-			middlewareLog.Errorf("Failed to get bacon %s: %s", baconID, err)
-		} else if bacon != nil {
-			activeBeacon = bacon.ToProtobuf()
+			middlewareLog.Errorf("Failed to get beacon %s: %s", baconID, err)
+		} else if beacon != nil {
+			activeBeacon = beacon.ToProtobuf()
 		}
 	}
 

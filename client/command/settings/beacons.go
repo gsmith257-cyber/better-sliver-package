@@ -35,5 +35,5 @@ func SettingsBeaconsAutoResultCmd(cmd *cobra.Command, con *console.SliverClient,
 		}
 	}
 	con.Settings.BeaconAutoResults = !con.Settings.BeaconAutoResults
-	con.PrintInfof("Bacon Auto Result = %v\n", con.Settings.BeaconAutoResults)
+	con.PrintInfof("Beacon Auto Result = %v\n", con.Settings.BeaconAutoResults)
 }
